@@ -37,7 +37,7 @@ public class Format {
 		int sg;
 
 		c = ecvt(d, digits, &dp, &sg);         // initial formatting
-		a = digits;                            // digits global, values 6 <= digits <= 16
+		a = digits;                            // digits global, values 6 <= digits <= 16, typical value 10
 		while(c[a - 1] == '0' && a > 1) a--;
 		if(a > param[0]) param[0] = a;         // sig digits
 		a -= dp;
