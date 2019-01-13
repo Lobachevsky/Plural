@@ -1,11 +1,12 @@
-module indexing;
+module index;
+
 import data;
 import std.conv;
 import parser;
 
 private int[] iop(int mult, double[] vec2, int[] vec1) {
-	int l1 = vec1.length;
-	int l2 = vec2.length;
+	int l1 = cast(int)vec1.length;
+	int l2 = cast(int)vec2.length;
 	int[] r = new int[l1 * l2];
 	int c = 0;
 	for(int i = 0; i < l2; i++) {
@@ -18,7 +19,7 @@ private int[] iop(int mult, double[] vec2, int[] vec1) {
 }
 
 private int[] powr(int[] pv) {
-	int l = pv.length;
+	int l = cast(int)pv.length;
 	int[] r = new int[l];
 	if (l == 0) return r;
 	r[0] = 1;
@@ -32,27 +33,19 @@ private int[] idxvec(Onion x, Onion y) {
 	int[] pv = powr(x.s);                     // power vector (strides)
 
 	int[] tt;                                 // get the index vector of the last coordinate
-	if (y.na[$ - 1].t == 3) {
-		tt = [cast(int)y.na[$ - 1].d];        // scalar
-	} else {
-		tt = intvec(y.na[$ - 1].da);          // aud
-	}     
+	if (y.na[$ - 1].t == 3) tt = [cast(int)y.na[$ - 1].d];   // scalar
+	else tt = intvec(y.na[$ - 1].da);                        // aud    
 
 	for (int i = 1; i < y.na.length; i++) {   // outer product multiply with successive coordinates, go backwards
-		if(y.na[$ - i - 1].t == 3) {
-			tt = iop(pv[i], [y.na[$ - i - 1].d], tt);
-		} else {
-			tt = iop(pv[i], y.na[$ - i - 1].da, tt);
-		}
+		if(y.na[$ - i - 1].t == 3) tt = iop(pv[i], [y.na[$ - i - 1].d], tt);
+		else tt = iop(pv[i], y.na[$ - i - 1].da, tt);
 	}
 	return tt;
 }
 
 private int product(int[]asv) {
 	int p = 1;
-	for (int i = 0; i < asv.length; i++) {     // product of shapes (scalar is 1)
-		p *= asv[i];
-	}
+	for (int i = 0; i < asv.length; i++) p *= asv[i];   // product of shapes (scalar is 1)
 	return p;
 }
 
@@ -99,7 +92,7 @@ static Onion idx(Onion x, Onion y) {
 				r.s = sv;                             // aud
 				r.da = tv;                            // the data
 				r.t = 23;                             // floating aud data type
-				r.r = sv.length;                      // rank is length of the shape vector
+				r.r = cast(int)sv.length;                      // rank is length of the shape vector
 			}
 			return r;
 
@@ -169,7 +162,7 @@ static Onion idxasgn(Onion x, Onion y, Onion z) {
 			return r;
 
 		default:
-			throw new Exception("Something wrong with index assignment");
+			throw new Exception("error in index assignment");
 	}
 }
 

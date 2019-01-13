@@ -5,12 +5,14 @@ import std.string;
 import std.conv;
 import functions;
 import arith;
-import indexing;
+import index;
 import rotate;
 import slash;
 import encdec;
 import catfat;
 import xpose;
+
+// $(DMDInstallDir)dmd2\windows\lib64\phobos64.lib
 
 Onion[string] globals;
 int parsermode;
@@ -81,11 +83,11 @@ public class pratt {
 				advance("]");
 
 				if (token != ":=") {
-					if (c == 1) return indexing.idx(left, args[0]);
+					if (c == 1) return index.idx(left, args[0]);
 					Onion r;
 					r.t = 42;
 					r.na = args[0 .. c];
-					return indexing.idx(left, r);
+					return index.idx(left, r);
 				}
 
 				// if (token != ":=") {
@@ -94,12 +96,12 @@ public class pratt {
 				advance(":=");
 				Onion b = expr(0);
 				if (c == 1) {
-					return indexing.idxasgn(left, args[0], b);
+					return index.idxasgn(left, args[0], b);
 				} else {
 					Onion r;
 					r.t = 42;
 					r.na = args[0 .. c];
-					return indexing.idxasgn(left, r, b);
+					return index.idxasgn(left, r, b);
 				}
 				// }
 
@@ -222,7 +224,7 @@ public class pratt {
 
 	private static int mbp2(string arg) {
 
-		// iversonian order of precedence
+		// iversonian (right to left) order of precedence
 
 		switch(arg) {
 			case "+": return tptr;
@@ -242,7 +244,7 @@ public class pratt {
 
 	private static int dbp1(string arg) {
 
-		// left-to-right order of presidents
+		// standard precedence (left-to-right) order of presidents
 
 		switch (arg) {
 		case ")":
@@ -435,7 +437,7 @@ public class pratt {
 				//r.r = 0;
 				r = daconv(arg);
 				r.s = new int[1];
-				r.s[0] = r.da.length;
+				r.s[0] = cast(int)r.da.length;
 			} else {
 				// r.t = 3;
 				// r.r = 0;

@@ -12,8 +12,8 @@ import data;
 
 			case 2323:
 				z = enc(x.da, y.da);
-				z.s = x.da.length ~ y.s;
-				z.r = z.s.length;
+				z.s = cast(int)x.da.length ~ y.s;
+				z.r = cast(int)z.s.length;
 				z.t = y.t;
 				return z;
 
@@ -32,7 +32,7 @@ import data;
 			case 2323:
 				z = dec(x.da, y.da);
 				z.s = 1 == y.s.length ? [] : y.s[1 .. $ - 1];
-				z.r = z.s.length;
+				z.r = cast(int)z.s.length;
 				z.t = y.t;
 				return z;
 
@@ -42,8 +42,8 @@ import data;
 	}
 
 	public static double[] enc (double[] argl, double[] argr) {
-		int ll = argl.length;
-		int lr = argr.length;
+		int ll = cast(int)argl.length;
+		int lr = cast(int)argr.length;
 		double[] r = new double[ll * lr];
 		double[] t = argr.dup();
 
@@ -58,8 +58,8 @@ import data;
 	}
 
 	public static double[] dec (double[] argl, double[] argr) {
-		int ll = argl.length;
-		int lr = argr.length;
+		int ll = cast(int)argl.length;
+		int lr = cast(int)argr.length;
 		double[] r = new double[lr / ll];
 		double[] t = argr.dup();
 		double[] u = pow(argl);
@@ -77,7 +77,7 @@ import data;
 		double[] r = arg.dup();
 		double a = 1.0;
 		double b;
-		for (int i = r.length - 1; i >= 0; i--) {
+		for (int i = cast(int)r.length - 1; i >= 0; i--) {
 			b = r[i];
 			r[i] = a;
 			a *= b;

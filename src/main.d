@@ -13,7 +13,7 @@ import util;
 	int main(string[] argv) {
 		string result;
         string EXIT_COMMAND = "#off\n";
-		writeln("Plural Interpreter Version 2018.04.04");
+		writeln("Plural 2019.01.14");
 		writeln("Enter '#off' to quit");
 
 		parsermode = 2;
@@ -48,9 +48,7 @@ import util;
 		string t = expr.strip();
 		if (0 == t.length) return "";
 		if ('#' != t[0]) return expr;
-
 		string[] l = t.split(" ");
-
 		switch (l[0]) {
 
 			case "#off":
@@ -58,16 +56,15 @@ import util;
 				return("\b");
 
 			case "#parse":
-				if (l.length == 1) {
-					writeln("is " ~ ((parsermode == 1) ? "ltor" : "iverson"));
-				} else {
+				if (l.length == 1) writeln("is " ~ ((parsermode == 1) ? "np" : "rl"));
+				else {
 					switch(l[1]) {
 						case "1":
-						case "ltor":
+						case "np":
 							parsermode = 1;
 							break;
 						case "2":
-						case "iverson":
+						case "rl":
 							parsermode = 2;
 							break;
 						default:
@@ -87,42 +84,28 @@ import util;
 
 			case "#fuzz":
 				if (l.length == 1) {
-					if (fuzzIsZero) {
-						writeln("is Zero");
-					} else {
-						writeln("is " ~ to!string(fuzz));
-					}
+					if (fuzzIsZero) writeln("is Zero");
+					else writeln("is " ~ to!string(fuzz));
 				} else {
 					if (util.util.validateDouble(l[1])) {
 						double f = to!double(l[1]);
-						if (f < 0 || f > 1e-5) {
-							writeln("error: 0 <= fuzz <= 1e-5");
-						} else {
+						if (f < 0 || f > 1e-5) writeln("error: 0 <= fuzz <= 1e-5");
+						else {
 							fuzz = f;
 							fuzzIsZero = f == 0;
 						} 
-					} else {
-						writeln("incorrect fuzz argument");
-					}
+					} else writeln("incorrect fuzz argument");
 				}
 				break;
 
 			case "#digits":
-				if (l.length == 1) {
-						writeln("is " ~ to!string(digits));
-					
-				} else {
+				if (l.length == 1) writeln("is " ~ to!string(digits));
+				else {
 					if (util.util.validateDouble(l[1])) {
-						double f = to!double(l[1]);
-						if (f < 1 || f > 34) {
-							writeln("error: 1 <= fuzz <= 34");
-						} else {
-							fuzz = f;
-							fuzzIsZero = f == 0;
-						} 
-					} else {
-						writeln("incorrect digits argument");
-					}
+						int d = to!int(l[1]);
+						if (d < 6 || d > 16) writeln("error: 6 <= digits <= 16");
+						else digits = d;
+					} else writeln("incorrect digits argument");	
 				}
 				break;
 

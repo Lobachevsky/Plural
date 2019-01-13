@@ -111,7 +111,7 @@ import std.conv;
         }
         public double[] HPflt(double[] y, double lambda)
         {
-            double [] d, e, f;;
+            double [] d, e, f;
 	        int  n;
             bool cNaN = false;
 

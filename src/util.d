@@ -10,7 +10,7 @@ public class util {
 		int p = 0;
 		int m = 1;
 		int n;
-		for (int i = c.length - 1; i > -1; i--) {
+		for (int i = cast(int)c.length - 1; i > -1; i--) {
 			switch(c[i]) {
 				case '0': case '1': case '2': case '3': case '4':
 				case '5': case '6': case '7': case '8': case '9':

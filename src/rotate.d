@@ -15,13 +15,13 @@ static Onion mreverse(Onion x) {
 			return z;
 
 		default:
-			throw new Exception("Reverse gone too far");
+			throw new Exception("error in reverse");
 	}
 }
 
 private double[] reverse(double[] arg) {
 	double[] r = arg.dup;
-	int t = r.length - 1;
+	int t = cast(int)r.length - 1;
 	for (int i = 0; i < r.length / 2; i++) {
 		double s = r[i];
 		r[i] = r[t - i];
@@ -43,12 +43,12 @@ static Onion drotate(Onion x, Onion y) {
 			return z;
 
 		default:
-			throw new Exception("Rotate gone too far");
+			throw new Exception("error in rotate");
 	}
 }
 
 private double[] rotate(int n, double[] arg) {
-	int l = arg.length;
+	int l = cast(int)arg.length;
 	double[] r = new double[l];
 	for (int i = 0; i < l; i++) {
 		r[i] = arg[(n + i) % l];

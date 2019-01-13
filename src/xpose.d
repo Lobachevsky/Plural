@@ -133,7 +133,7 @@ public class FFred {
         }
         int[] z = new int[t];
 
-        for (int c = arg.length - 1; c >= 0; c--) {
+        for (int c = cast(int)arg.length - 1; c >= 0; c--) {
             int s = -1;
             for (int i2 = 0; i2 < arg.length; i2++) {
                 s = i2;
@@ -177,7 +177,6 @@ public class FFred {
 				return z;
 
 			default:
-				throw new Exception("Transpose gone too far");
+				throw new Exception("error in transpose");
 		}
-
 	}

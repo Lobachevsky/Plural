@@ -28,8 +28,8 @@ import std.math;
 				throw new Exception("cat gone too far");
 		}
 
-		z.s = [z.da.length];
-		z.r = z.s.length;
+		z.s = [cast(int)z.da.length];
+		z.r = cast(int)z.s.length;
 		return z;
 	}
 
@@ -43,21 +43,21 @@ import std.math;
 				break;
 
 			case 323:
-				z = x.d1v(y.da.length).da ~ y.da;
+				z = x.d1v(cast(int)y.da.length).da ~ y.da;
 				z.s = 2 ~ y.s;
-				z.r = z.s.length;
+				z.r = cast(int)z.s.length;
 				break;
 
 			case 2303:
-				z = x.da ~ y.d1v(x.da.length).da;
+				z = x.da ~ y.d1v(cast(int)x.da.length).da;
 				z.s = 2 ~ x.s;
-				z.r = z.s.length;
+				z.r = cast(int)z.s.length;
 				break;
 
 			case 2323:
 				z = x.da ~ y.da;
 				z.s = 2 ~ y.s;
-				z.r = z.s.length;
+				z.r = cast(int)z.s.length;
 				break;
 
 			default:
@@ -83,8 +83,8 @@ import std.math;
 				throw new Exception("ravel gone too far");
 		}
 
-		z.s = [z.da.length];
-		z.r = z.s.length;
+		z.s = [cast(int)z.da.length];
+		z.r = cast(int)z.s.length;
 		return z;
 	}
 

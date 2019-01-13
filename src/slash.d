@@ -23,7 +23,7 @@ import data;
 			return z;
 
 		default:
-			throw new Exception("Compress gone too far");
+			throw new Exception("error in compress");
 		}
 	}
 
@@ -35,13 +35,13 @@ import data;
 
 			case 2323:
 				bool[] la = new bool[x.da.length];
-				for (int i = 0; i < la.length; i++) {
+				for (int i = 0; i < cast(int)la.length; i++) {
 					la[i] = x.da[i] == 1.0;
 					sum += la[i];
 				}
 				int[] s2 = y.s;
 				double[] d2 = expand(la, y.da, s2[s2.length - 1]);
-				s2[s2.length - 1] = la.length;
+				s2[cast(int)s2.length - 1] = cast(int)la.length;
 
 				z = y;
 				z.da = d2;
@@ -49,7 +49,7 @@ import data;
 				return z;
 
 			default:
-				throw new Exception("Expand gone too far");
+				throw new Exception("error in expand");
 		}
 	}
 

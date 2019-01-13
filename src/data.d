@@ -2,6 +2,7 @@ module data;
 
 import std.conv;
 import core.sys.posix.stdlib;
+import formatting;
 
 struct Onion {
 	union {
@@ -25,7 +26,7 @@ struct Onion {
 		switch(t) {
 			case 1: return to!string(b);
 			case 2: return to!string(i);
-			case 3: return to!string(d);
+			case 3: return to!string(Format.epr0(d)); // to!string(d);
 			case 4: return to!string(c);
 
 			case 23:
@@ -36,14 +37,16 @@ struct Onion {
 						return to!string(da[0]);  // depth 1 scalar
 
 					case 1:
-						for(int i = 0; i < da.length; i++) z = z ~ to!string(da[i]) ~ " ";
+						// for(int i = 0; i < da.length; i++) z = z ~ to!string(da[i]) ~ " ";
+						for(int i = 0; i < da.length; i++) z = z ~ to!string(Format.epr0(da[i])) ~ " ";
 						break;
 
 					case 2:
 						int l = s[1];
 						for(int i = 0; i < da.length; i++) {
 							if (i != 0 && 0 == i % l) z = z ~ "\n";
-							z = z ~ to!string(da[i]) ~ " ";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ to!string(Format.epr0(da[i])) ~ " ";
 						}
 						break;
 
@@ -53,15 +56,20 @@ struct Onion {
 						for (int i = 0; i < da.length; i++) {
 							if (i != 0 && 0 == i % l) z = z ~ "\n";
 							if (i != 0 && 0 == i % p) z = z ~ "\n";
-							z = z ~ to!string(da[i]) ~ " ";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ to!string(Format.epr0(da[i])) ~ " ";
 						}
 						break;
 				}
 				return z;
 
-			default: return "??? " ~ st ~ " " ~ to!string(t) ~ " " 
-				~ to!string(b) ~ " " ~ to!string(i) ~ " " 
-				~ to!string(d) ~ " " ~ to!string(c) ~ " ";
+			default: return "??? " ~ st ~ " " 
+				~ to!string(t) ~ " " 
+				~ to!string(b) ~ " " 
+				~ to!string(i) ~ " " 
+				// ~ to!string(d) ~ " " 
+				~ to!string(Format.epr0(d)) ~ " " 
+				~ to!string(c) ~ " ";
 		}
 	}
 
@@ -79,7 +87,7 @@ struct Onion {
 		r = 1;
 		// s = new int[1];
 		// s[0] = v.length;
-		s = [v.length];
+		s = [cast(int)v.length];
 		st = "";
 	}
 

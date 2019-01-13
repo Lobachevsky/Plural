@@ -293,7 +293,7 @@ public class lex {
 	        return r;
 	    }
 
-	    d = arg.length - 1;
+	    d = cast(int)arg.length - 1;
 	    r = arg[c - 1 .. d];
 	    ptr = d + 1;
 	    return r;
@@ -303,7 +303,7 @@ public class lex {
 
 		int i, l, c, s, p, r;
 
-	    l = arg.length;
+	    l = cast(int)arg.length;
 	    p = ptr;
 	    s = ptr;
 	    r = 0;
@@ -359,7 +359,7 @@ public class lex {
 	private static string num2(string arg) {
 
 		int i, l, c, s, p, r;
-		l = arg.length;
+		l = cast(int)arg.length;
 	    p = ptr;
 	    s = ptr;
 	    r = 0;
@@ -386,29 +386,31 @@ public class lex {
 	    if (p > l) return num2;
 
 	    c = arg[p - 1];
-	    if (c == 46) {
-	    	p = p + 1;
-	    	r = r + 1;
-	    }
+		// if (c == 101) {       // check for e
+			if (c == 46) {
+	    		p = p + 1;
+	    		r = r + 1;
+			}
 
-	    if (p > l) return num2;
+			if (p > l) return num2;
 
-	    c = arg[p - 1];
-	    if (c < 48 || c > 57) return num2;
-	    p = p + 1;
-	    r = r + 1;
+			c = arg[p - 1];
+			if (c < 48 || c > 57) return num2;
+			p = p + 1;
+			r = r + 1;
 
-	    for (i = p; i <= l; i++) {
-	        c = arg[i - 1];
-	        if (c < 48 || c > 57) break;
-	        p = p + 1;
-	        r = r + 1;
-	    }
+			for (i = p; i <= l; i++) {
+				c = arg[i - 1];
+				if (c < 48 || c > 57) break;
+				p = p + 1;
+				r = r + 1;
+			}
 
-	    if (p > l) return num2;
-
-	    c = arg[p - 1];
-	    if (c != 101) return num2;
+			if (p > l) return num2;
+			c = arg[p - 1];
+		// }
+		if (c != 101) return num2;
+		
 	    p = p + 1;
 	    r = r + 1;
 
@@ -425,7 +427,7 @@ public class lex {
 	    p = p + 1;
 	    r = r + 1;
 
-	    for (i = p; i == l; i++) {
+	    for (i = p; i <= l; i++) {
 	        c = arg[i - 1];
 	        if (c < 48 || c > 57) break;
 	        p = p + 1;

@@ -38,7 +38,7 @@ public class fns {
 				return r;
 
 			default:
-				throw new Exception("Strange syntax error");
+				throw new Exception("syntax error 0");
 				// assert (1 == 2);
 		}
 	}
@@ -90,14 +90,14 @@ public class fns {
 		int l;
 
 		if (x.t == 42) {
-			l = x.na.length;
+			l = cast(int)x.na.length;
 			s = new int[l];
 			for (int i = 0; i < l; i++) {
 				s[i] = to!int(x.na[i].d);
 				p *= s[i];
 			}
 		} else if (x.t == 23) {
-			l = x.da.length;
+			l = cast(int)x.da.length;
 			s = new int[l];
 			for (int i = 0; i < l; i++) {
 				s[i] = to!int(x.da[i]);
@@ -133,11 +133,11 @@ public class fns {
 				break;
 
 			default:
-				throw new Exception("Something wrong with reshape");
+				throw new Exception("error in reshape");
 		}
 		if (l != 1) {
 			r.s = s;
-			r.r = s.length;
+			r.r = cast(int)s.length;
 			}
 		return r;
 	}
@@ -157,7 +157,7 @@ public class fns {
 				return z;
 
 			default:
-				throw new Exception("Iota idiocy");
+				throw new Exception("error in iota");
 		}
 	}
 
@@ -175,7 +175,7 @@ public class fns {
 				}
 				return z;
 			default: 
-				throw new Exception("First faulty");
+				throw new Exception("error in first");
 		}
 	}
 
@@ -190,7 +190,7 @@ public class fns {
 				z = to!(double[])(x.s);
 				return z;
 			default: 
-				throw new Exception("Shape wrong");
+				throw new Exception("error in shape");
 		}
 	}
 
