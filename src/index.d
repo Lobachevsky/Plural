@@ -97,7 +97,7 @@ static Onion idx(Onion x, Onion y) {
 			return r;
 
 		default:
-			throw new Exception("Something wrong with indexing");
+			throw new Exception("error in indexing");
 	}
 }
 

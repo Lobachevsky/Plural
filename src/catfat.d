@@ -25,7 +25,7 @@ import std.math;
 				break;
 
 			default:
-				throw new Exception("cat gone too far");
+				throw new Exception("error in catenation");
 		}
 
 		z.s = [cast(int)z.da.length];
@@ -61,7 +61,7 @@ import std.math;
 				break;
 
 			default:
-				throw new Exception("lam gone too far");
+				throw new Exception("error in lamination");
 		}
 		return z;
 	}
@@ -80,7 +80,7 @@ import std.math;
 				break;
 
 			default:
-				throw new Exception("ravel gone too far");
+				throw new Exception("error in unravel");
 		}
 
 		z.s = [cast(int)z.da.length];
