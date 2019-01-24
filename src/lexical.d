@@ -1,20 +1,24 @@
 module lexical;
 
 import std.conv;
+import dates;
 
 public class lex {
 
-	public static int ptr;
+	// let's get lexical
 
+	public static int ptr;
 	public static string[] split(string arg) {
 
 	    string[] r = new string[arg.length + 1];
+		char sep = 7;
 
 	    int c, d;
 	    string s;
 	    bool n0, n1;
 		bool mo0, mo1;
 		bool do0, do1, do2;
+		// bool s0, s1;
 	    d = 0;
 	    arg = ' ' ~ arg ~ '\n';
 	    ptr = 1;
@@ -25,6 +29,7 @@ public class lex {
 	        c = ptr;
 	        s = to!string(arg[c - 1]);
 	        n1 = false;
+			// s1 = false;
 	        switch (s) {
 	            case " ": case "\n":
 	                ptr = c + 1;
@@ -37,6 +42,8 @@ public class lex {
 	                }
 	                break;
 	            case "\"":
+					// s1 = true;
+					n1 = true;
 	                s = quote(arg, "\"");
 	                break;
 	            case "'":
@@ -69,7 +76,8 @@ public class lex {
 	            case "0": case "1": case "2": case "3": case "4":
 	            case "5": case "6": case "7": case "8": case "9":
 	                n1 = true;
-	                s = num2(arg);
+					s = date(arg);
+	                if (s == "") s = num2(arg);
 	                if (s == "") s = num1(arg);
 	                break;
 	            case "+": case "*": case "%": case "\\": 
@@ -96,7 +104,8 @@ public class lex {
 	        }
 
 	        if (s != "") {
-				if (n0 && n1) r[d - 1] = r[d - 1] ~ " " ~ s;
+				// if ((n0 && n1) || (s0 && s1)) r[d - 1] = r[d - 1] ~ " " ~ s;
+				if (n0 && n1) r[d - 1] = r[d - 1] ~ sep ~ s;
 	            else {
 					r[d] = s;
 					d = d + 1;
@@ -104,6 +113,7 @@ public class lex {
 	        	// r[d++] = s;
 
 	            n0 = n1;
+				// s0 = s1;
 	        }
 	    }
 
@@ -437,6 +447,49 @@ public class lex {
 	    num2 = arg[s - 1 .. p - 1]; //
 	    ptr = s + r;
 	    return num2;
+	}
+
+	private static string date(string arg) {
+		if (arg.length < ptr + 10) return "";
+		int p = ptr - 1;
+		if (arg[p + 4] != '.') return "";
+		if (arg[p + 7] != '.') return "";
+
+		int e = (arg[p] - 48) * 10000000;
+
+		int d = arg[p + 1];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 1000000;
+
+		d = arg[p + 2];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 100000;
+
+		d = arg[p + 3];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 10000;
+
+		d = arg[p + 5];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 1000;
+
+		d = arg[p + 6];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 100;
+
+		d = arg[p + 8];
+		if (d < 48 || d > 57) return "";
+		e += (d - 48) * 10;
+
+		d = arg[p + 9];
+		if (d < 48 || d > 57) return "";
+		e += d - 48;
+
+		if (!Day.isValid(e)) return "";
+		string r = arg[p .. p + 10];
+		ptr += 10;
+
+		return r;
 	}
 
 	// public static string mid(final string arg, final int a0, final int a1) {

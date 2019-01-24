@@ -87,6 +87,7 @@ public class Format {
 				// r[k++] = "0"; // else
 				r[k++] = c[j];
 		for(i = 0; i < param[2]; i++) {
+			if(i == 0 && k == 0) r[k++] = '0';
 			if(i == 0) r[k++] = '.';
 			if(dp < 0) {
 				r[k++] = '0';
@@ -94,7 +95,7 @@ public class Format {
 			} else
 				// if(c >= mc)
 					// r[k++] = '0'; // else
-					r[k++] = c[i + j];
+					r[k++] = c[j++]; // c[i + j];
 		}
 		return r[0 .. k];
 	}

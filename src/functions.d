@@ -85,18 +85,19 @@ public class fns {
 	static Onion reshape(Onion x, Onion y) {
 		Onion r;
 		double[] t;
+		string[] q;
 		int[] s;
 		int p = 1;
 		int l;
 
-		if (x.t == 42) {
+		if (x.t == 42) {                 // list of scalars
 			l = cast(int)x.na.length;
 			s = new int[l];
 			for (int i = 0; i < l; i++) {
 				s[i] = to!int(x.na[i].d);
 				p *= s[i];
 			}
-		} else if (x.t == 23) {
+		} else if (x.t == 23) {          // vector right argument
 			l = cast(int)x.da.length;
 			s = new int[l];
 			for (int i = 0; i < l; i++) {
@@ -112,24 +113,38 @@ public class fns {
 		// r.t = 23;  // plural reshape never returns a scalar
 		// r.s = s;
 		// r.r = s.length;
-		t = new double[p];
+		
 		switch (y.t) {
 			case 3:
+				t = new double[p];
+				for (int i = 0; i < p; i++) t[i] = y.d;
+				r = t;
+				break;
+
+			case 5:
+				q = new string[p];
+				for (int i = 0; i < p; i++) q[i] = y.q;
+				r = q;
+				break;
+
+			case 23:
+				t = new double[p];
+				int c = 0;
 				for (int i = 0; i < p; i++) {
-					t[i] = y.d;
+					t[i] = y.da[c++];
+					if (c == y.da.length) c = 0;
 				}
 				r = t;
 				break;
 
-			case 23:
+			case 25:
+				q = new string[p];
 				int c = 0;
 				for (int i = 0; i < p; i++) {
-					t[i] = y.da[c++];
-					if (c == y.da.length) {
-						c = 0;
-					}
+					q[i] = y.qa[c++];
+					if (c == y.qa.length) c = 0;
 				}
-				r = t;
+				r = q;
 				break;
 
 			default:
@@ -150,9 +165,7 @@ public class fns {
 
 			case 303:
 				t = new double[to!int(y.d - x.d + 1)];
-				for (int i = 0; i < t.length; i++) {
-					t[i] = x.d + i;
-				}
+				for (int i = 0; i < t.length; i++) t[i] = x.d + i;
 				z = t;
 				return z;
 
@@ -168,11 +181,14 @@ public class fns {
 			case 3:
 				return x;
 			case 23:
-				if (0 == x.da.length) {
-					z = 0;
-				} else {
-					z = x.da[0];
-				}
+				if (0 == x.da.length) z = 0;
+				else z = x.da[0];
+				return z;
+			case 5:
+				return x;
+			case 25:
+				if (0 == x.qa.length) z = "";
+				else z = x.qa[0];
 				return z;
 			default: 
 				throw new Exception("error in first");
@@ -180,11 +196,12 @@ public class fns {
 	}
 
 	static Onion shape(Onion x) {
+		double[] t = [];
 		Onion z;
 
 		switch (x.t) {
 			case 3:
-				z = [];
+				z = t;
 				return z;
 			case 23:
 				z = to!(double[])(x.s);

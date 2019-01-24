@@ -1,8 +1,8 @@
 module data;
 
 import std.conv;
-import core.sys.posix.stdlib;
 import formatting;
+import dates;
 
 struct Onion {
 	union {
@@ -10,10 +10,14 @@ struct Onion {
 		double d;
 		char c;
 		bool b;
+		string q;
+		Day dy;
 		int[] ia;
 		double[] da;
 		char[] ca;
 		bool[] ba;
+		string[] qa;
+		Day[] dya;
 		Onion[] na;
 	}
 	int t;
@@ -28,6 +32,7 @@ struct Onion {
 			case 2: return to!string(i);
 			case 3: return to!string(Format.epr0(d)); // to!string(d);
 			case 4: return to!string(c);
+			case 5: return q; // already a string
 
 			case 23:
 
@@ -63,13 +68,49 @@ struct Onion {
 				}
 				return z;
 
+			case 25:
+
+				switch(r) {
+
+					case 0:
+						return qa[0];  // depth 1 scalar
+
+					case 1:
+						// for(int i = 0; i < da.length; i++) z = z ~ to!string(da[i]) ~ " ";
+						for(int i = 0; i < qa.length; i++) z = z ~ qa[i] ~ " ";
+						break;
+
+					case 2:
+						int l = s[1];
+						for(int i = 0; i < da.length; i++) {
+							if (i != 0 && 0 == i % l) z = z ~ "\n";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ qa[i] ~ " ";
+						}
+						break;
+
+					default:
+						int l = s[$ - 1];
+						int p = l * s[$ - 2];
+						for (int i = 0; i < da.length; i++) {
+							if (i != 0 && 0 == i % l) z = z ~ "\n";
+							if (i != 0 && 0 == i % p) z = z ~ "\n";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ qa[i] ~ " ";
+						}
+						break;
+				}
+				return z;
+
+
 			default: return "??? " ~ st ~ " " 
 				~ to!string(t) ~ " " 
 				~ to!string(b) ~ " " 
 				~ to!string(i) ~ " " 
 				// ~ to!string(d) ~ " " 
 				~ to!string(Format.epr0(d)) ~ " " 
-				~ to!string(c) ~ " ";
+				~ to!string(c) ~ " "
+				~ q ~ " ";
 		}
 	}
 
@@ -84,6 +125,24 @@ struct Onion {
 	void opAssign(double[] v) {
 		da = v;
 		t = 23;
+		r = 1;
+		// s = new int[1];
+		// s[0] = v.length;
+		s = [cast(int)v.length];
+		st = "";
+	}
+
+	void opAssign(string v) {
+		q = v;
+		t = 5;
+		r = 0;
+		s = new int[0];
+		st = "";
+	}
+
+	void opAssign(string[] v) {
+		qa = v;
+		t = 25;
 		r = 1;
 		// s = new int[1];
 		// s[0] = v.length;

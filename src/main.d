@@ -7,6 +7,7 @@ import parser;
 import data;
 import arith;
 import util;
+import dates;
 
 // public class PluralRepl {
 
@@ -94,7 +95,7 @@ import util;
 							fuzz = f;
 							fuzzIsZero = f == 0;
 						} 
-					} else writeln("incorrect fuzz argument");
+					} else writeln("incorrect #fuzz argument");
 				}
 				break;
 
@@ -105,9 +106,21 @@ import util;
 						int d = to!int(l[1]);
 						if (d < 6 || d > 16) writeln("error: 6 <= digits <= 16");
 						else digits = d;
-					} else writeln("incorrect digits argument");	
+					} else writeln("incorrect #digits argument");	
 				}
 				break;
+
+			case "#dates":
+				if (l.length == 1) writeln("is " ~ dateLocale);
+				else {
+					if (l[1].length == 3 && l.length == 2) {
+						string q = l[1];
+						if (q != "iso" && q != "eur" && q != "usa") writeln("error: must be iso, eur, or usa");
+						else dateLocale = q;
+					} else writeln("incorrect #dates argument");	
+				}
+				break;
+		
 
 			default:
 				writeln("incorrect command");

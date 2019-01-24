@@ -196,6 +196,21 @@ public class pratt {
 		case "*$": return fns.shape(expr(bp));
 		case "-&": return catfat.ravel(expr(bp));
 
+		case "configuration":
+		case "currency":
+		case "deposits":
+		case "curve":
+		case "interpolation":
+		case "interpolationValue":
+		case "cbswaps":
+		case "swaps":
+		case "turns":
+		case "serialFutures":
+		case "immFutures":
+		case "fras":
+		case "basisSwaps":
+			throw new Exception("not implemented yet");
+
 		default:
 			return resolve2(arg);
 		}
@@ -211,13 +226,30 @@ public class pratt {
 		// left to right monadic order of precedence
 
 		switch(arg) {
-			case "+": return 4;
-			case "-": return 4;
-			case "not": return 4; 
-			case "abs": return 4; 
-			case "trunc": return 4;
-			case "exp": return 4;
-			case "ln": return 4;
+			case "+": 
+			case "-": 
+			case "not": 
+			case "abs": 
+			case "trunc":
+			case "exp": 
+			case "ln": 
+				return 4;
+
+			case "configuration":
+			case "currency":
+			case "deposits":
+			case "curve":
+			case "interpolation":
+			case "interpolationValue":
+			case "cbswaps":
+			case "swaps":
+			case "turns":
+			case "serialFutures":
+			case "immFutures":
+			case "fras":
+			case "basisSwaps":
+				return 4;
+
 			default: return 0;
 		}
 	}
@@ -227,13 +259,30 @@ public class pratt {
 		// iversonian (right to left) order of precedence
 
 		switch(arg) {
-			case "+": return tptr;
-			case "-": return tptr;
-			case "not": return tptr; 
-			case "abs": return tptr; 
-			case "trunc": return tptr;
-			case "exp": return tptr;
-			case "ln": return tptr;
+			case "+": 
+			case "-": 
+			case "not": 
+			case "abs": 
+			case "trunc": 
+			case "exp": 
+			case "ln": 
+				return tptr;
+
+			case "configuration":
+			case "currency":
+			case "deposits":
+			case "curve":
+			case "interpolation":
+			case "interpolationValue":
+			case "cbswaps":
+			case "swaps":
+			case "turns":
+			case "serialFutures":
+			case "immFutures":
+			case "fras":
+			case "basisSwaps":
+				return tptr;
+
 			default: return 0;
 		}
 	}
@@ -429,10 +478,11 @@ public class pratt {
 	private static Onion resolve2(string arg) {
 		int idx;
 		double d;
+		char sep = 7;
 
-		if (arg[0] == '-' || isDigit(arg[0])) {
+		if (arg[0] == '-' || isDigit(arg[0])) {                // numeric literal
 			Onion r;
-			if (-1 != indexOf(arg, " ")) { // vector literal
+			if (-1 != indexOf(arg, sep)) {                     // vector literal
 				//r.t = 23;
 				//r.r = 0;
 				r = daconv(arg);
@@ -442,6 +492,22 @@ public class pratt {
 				// r.t = 3;
 				// r.r = 0;
 				r = to!double(arg);
+			}
+			return r; 
+		}
+
+		if (arg[0] == '"') {                 // string literal
+			Onion r;
+			if (-1 != indexOf(arg, sep)) {   // vector literal
+				//r.t = 23;
+				//r.r = 0;
+				r = dsconv(arg);
+				r.s = new int[1];
+				r.s[0] = cast(int)r.da.length;
+			} else {
+				// r.t = 3;
+				// r.r = 0;
+				r = arg[1 .. $-1];
 			}
 			return r; 
 		}
@@ -475,10 +541,20 @@ public class pratt {
 		return (arg == '_') || (arg > 64 && arg < 91) || (arg > 96 && arg < 123);
 	}
 	static double[] daconv(string arg) {
-		string[] t = split(arg, " ");
+		char sep = 7;
+		string[] t = split(arg, sep);
 		// double[] r = new double[t.length];
 		// for (int i = 0; i < t.length; i++) r[i] = to!double(t[i]);
 		return to!(double[])(t);
+		// return r;
+	}
+
+	static string[] dsconv(string arg) {
+		char sep = 7;
+		string[] t = split(arg, sep);
+		string[] r = new string[t.length];
+		for (int i = 0; i < t.length; i++) r[i] = t[i][1 .. $-1];
+		return r;
 		// return r;
 	}
 }
