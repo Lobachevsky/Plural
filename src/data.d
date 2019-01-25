@@ -33,6 +33,7 @@ struct Onion {
 			case 3: return to!string(Format.epr0(d)); // to!string(d);
 			case 4: return to!string(c);
 			case 5: return q; // already a string
+			case 6: return dy.toString();
 
 			case 23:
 
@@ -102,6 +103,40 @@ struct Onion {
 				}
 				return z;
 
+			case 26:
+
+				switch(r) {
+
+					case 0:
+						return dya[0].toString();  // depth 1 scalar
+
+					case 1:
+						// for(int i = 0; i < da.length; i++) z = z ~ to!string(da[i]) ~ " ";
+						for(int i = 0; i < qa.length; i++) z = z ~ dya[i].toString() ~ " ";
+						break;
+
+					case 2:
+						int l = s[1];
+						for(int i = 0; i < da.length; i++) {
+							if (i != 0 && 0 == i % l) z = z ~ "\n";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ dya[i].toString() ~ " ";
+						}
+						break;
+
+					default:
+						int l = s[$ - 1];
+						int p = l * s[$ - 2];
+						for (int i = 0; i < da.length; i++) {
+							if (i != 0 && 0 == i % l) z = z ~ "\n";
+							if (i != 0 && 0 == i % p) z = z ~ "\n";
+							// z = z ~ to!string(da[i]) ~ " ";
+							z = z ~ dya[i].toString() ~ " ";
+						}
+						break;
+				}
+				return z;
+
 
 			default: return "??? " ~ st ~ " " 
 				~ to!string(t) ~ " " 
@@ -126,8 +161,6 @@ struct Onion {
 		da = v;
 		t = 23;
 		r = 1;
-		// s = new int[1];
-		// s[0] = v.length;
 		s = [cast(int)v.length];
 		st = "";
 	}
@@ -144,9 +177,23 @@ struct Onion {
 		qa = v;
 		t = 25;
 		r = 1;
-		// s = new int[1];
-		// s[0] = v.length;
 		s = [cast(int)v.length];
+		st = "";
+	}
+
+	void opAssign(Day d) {
+		dy = d;
+		t = 6;
+		r = 0;
+		s = new int[0];
+		st = "";
+	}
+
+	void opAssign(Day[] d) {
+		dya = d;
+		t = 26;
+		r = 1;
+		s = [cast(int)d.length];
 		st = "";
 	}
 

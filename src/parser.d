@@ -11,6 +11,7 @@ import slash;
 import encdec;
 import catfat;
 import xpose;
+import dates;
 
 // $(DMDInstallDir)dmd2\windows\lib64\phobos64.lib
 
@@ -480,6 +481,18 @@ public class pratt {
 		double d;
 		char sep = 7;
 
+		if (arg.length > 7 && isDigit(arg[0]) && arg[4] == '.' && arg[7] == '.') {
+			Onion r;
+			if (-1 != indexOf(arg, sep)) {
+				r = dtconv(arg);
+				r.s = new int[1];
+				r.s[0] = cast(int)r.da.length;
+			} else {
+				r = new Day(arg);
+			}
+			return r;
+		}
+
 		if (arg[0] == '-' || isDigit(arg[0])) {                // numeric literal
 			Onion r;
 			if (-1 != indexOf(arg, sep)) {                     // vector literal
@@ -555,6 +568,13 @@ public class pratt {
 		string[] r = new string[t.length];
 		for (int i = 0; i < t.length; i++) r[i] = t[i][1 .. $-1];
 		return r;
-		// return r;
+	}
+
+	static Day[] dtconv(string arg) {
+		char sep = 7;
+		string[] t = split(arg, sep);
+		Day[] r = new Day[t.length];
+		for (int i = 0; i < t.length; i++) r[i] = new Day(t[i]);
+		return r;
 	}
 }

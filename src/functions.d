@@ -4,6 +4,7 @@ import data;
 import parser;
 import std.conv;
 import xpose;
+import dates;
 
 public class fns {
 
@@ -86,6 +87,7 @@ public class fns {
 		Onion r;
 		double[] t;
 		string[] q;
+		Day[] dy;
 		int[] s;
 		int p = 1;
 		int l;
@@ -145,6 +147,16 @@ public class fns {
 					if (c == y.qa.length) c = 0;
 				}
 				r = q;
+				break;
+
+			case 26:
+				dy = new Day[p];
+				int c = 0;
+				for (int i = 0; i < p; i++) {
+					dy[i] = y.dya[c++];
+					if (c == y.dya.length) c = 0;
+				}
+				r = dy;
 				break;
 
 			default:
