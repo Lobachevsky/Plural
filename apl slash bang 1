@@ -1,0 +1,61 @@
+
+APL slash bang                                DRAFT 31 December, 1991
+
+I would like to propose an ASCII rendition of APL, to be called
+APL/! (a pun on APL\?, itself a pun on APL).  In this scheme, ASCII
+symbol combinations that are visually appealing are assigned to
+functions that are most commonly used, subject of course to rules
+of consistency and operator ambivalence.  In particular, APL's two
+Greek letters rho and iota are transliterated to slash / and bang !.
+There are two adverbs, a pre-modifier tilde ~ signifying oppositeness,
+and a post-modifier dot . signifying extension.  A longer note on the
+motivation and design of APL/! will be submitted later.
+
+Logical and Comparison:    
+  ~. not   ^. and   v. or      ~^. nand    ~v. nor
+  = equal  < less   > greater  ~= unequal  ~< not less  ~> not greater
+Structural (shaping, slicing, transposing, shifting):
+  , ravel, catenate   / shape, reshape   | take  ~| drop   \ transpose  
+  -. reverse, rotate (row-wise)  +. (column-wise)
+Special:
+  ! initial segment of indices, index of   ? membership
+  /. compress, reduce (cumulate)   \. expand, scan (partials)
+  ~/. ~\. (column-wise)            # execute  ~# format
+  (.f.) outer product   (f).(g) inner product
+Arithmetic:  
+  + plus   - negative, minus   * sign, times   % reciprocal, divide  
+  ^ power  ~^ logarithm
+Numerical:
+  <. floor, min  >. ceiling, max   ~<. grade up  ~>. grade down
+  *. factorial, choose   %. invert matrix, solve   ?. roll, deal
+
+Syntactic:
+
+
+  =. assignment   -> branch   <> statement separator   <>. o} comment
+  & delta  &. delta-underscore   ~& del (define function)  ~&. lock
+Unchanged:  
+  ;  :  [ ]  ( )  '
+Initials for Extended APL:
+  c. enclose  ~c. disclose   o. box (objectify)  ~o. open
+
+Some familiar idioms:
+  /A "shape A"    //A "rank A"   (/B)/A "B-conform A"
+  !10 "initial ten"    !/A "indices A"   B!A "B-indices A"
+  ((!/A)=A!A)/.A "A minus duplicates"
+      [indices A equal A-indices A, subset A]
+  +/.^.\. "find first zero" [cumulative-add all-one left-partials]
+  +/.^.\.-.' '=A "count trailing blanks"
+      [find first zero, backwards, in space-equal-A]
+  (-+/.^.\.-.' '=A)~|A "A minus trailing blanks"
+  (-+/.^.\.-.' '=A)-.A "right-justify A"  
+      [row-wise circular shift, trailing blanks to front]
+  (!10)(.*.)(!10) "ten-by-ten multiplication table"
+  A(+).(*)B "matrix product"   A(<.).(+)A "shortest paths, one stop-over"
+  ->(COND)/LABEL [goto LABEL if COND]
+  ->(CONDS)/.LABELS [goto LABEL corresponding to first true COND]
+
+-----------------------------------------------------------------------------
+William I. Chang, Ph.D.
+Cold Spring Harbor Laboratory
+100 Bungtown Road, Cold Spring Harbor, NY 11724 
